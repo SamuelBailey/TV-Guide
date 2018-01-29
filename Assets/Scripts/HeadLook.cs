@@ -13,9 +13,9 @@ public class HeadLook : MonoBehaviour {
     private void Update()
     {
         verticalRotation = -Input.GetAxis("Mouse Y");
-        verticalRotation *= lookSpeed;
+        verticalRotation *= lookSpeed * Time.deltaTime;
         horizontalRotation = Input.GetAxis("Mouse X");
-        horizontalRotation *= lookSpeed;
+        horizontalRotation *= lookSpeed * Time.deltaTime;
 
         if (maxLookRotation >= 180 || maxLookRotation <= 0)
             throw new System.ArgumentOutOfRangeException("maxLookRotation must be between 0 and 180");
