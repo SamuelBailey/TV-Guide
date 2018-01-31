@@ -16,6 +16,7 @@ public class ChangeChannel : MonoBehaviour
     public Channel currentChannel;
     Channel selectedChannel;
     bool changeChannel;
+    bool overrideFindSelectedChannel;
     public bool canChangeChannel;
 
     public List<GameObject> shooterSceneObjects = new List<GameObject>();
@@ -43,6 +44,7 @@ public class ChangeChannel : MonoBehaviour
 
     private void Start()
     {
+        overrideFindSelectedChannel = false;
         enableMainCamera = false;
         // displayStatic = false;
         currentChannel = Channel.Shooter;
@@ -56,7 +58,10 @@ public class ChangeChannel : MonoBehaviour
         if (canChangeChannel)
         {
             // Check if the user has selected a channel to change to
-            selectedChannel = findSelectedChannel();
+            if (!overrideFindSelectedChannel)
+                selectedChannel = findSelectedChannel();
+            else // if override == true, set to false
+                overrideFindSelectedChannel = false;
 
             if (changeChannel)
             {
@@ -96,6 +101,14 @@ public class ChangeChannel : MonoBehaviour
             // Resume music for current channel
             gameObject.GetComponent<SetMusic>().PlayAudioSource(selectedChannel);
         }
+    }
+
+    public void SelectChannel(Channel channel)
+    {
+        Debug.Log("Changing channel");
+        changeChannel = true;
+        overrideFindSelectedChannel = true;
+        selectedChannel = channel;
     }
 
     Channel findSelectedChannel()

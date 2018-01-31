@@ -32,12 +32,23 @@ public class KillPlayer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Die" || other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Die")
         {
             // Comment out one of the below lines depending if you want to completely restart or just move the player.
 
             // RespawnPlayer();
             RestartGame();
+        }
+        else if (other.gameObject.tag == "Enemy")
+        {
+            if (sceneController.GetComponent<ChangeChannel>().currentChannel != Channel.Forest)
+            {
+                // disable the skeleton so that there aren't 2 instances of it when including the one in front of the player's face
+                other.gameObject.SetActive(false);
+                gameObject.GetComponent<JumpScare>().JumpScareDeath();
+            }
+            else
+                RestartGame();
         }
     }
 
